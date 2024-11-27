@@ -3,38 +3,102 @@
     (:require [befunge-93.PC :refer :all])
   (:gen-class))
 
-
-
-(defn crear-matriz []
-  (vec (repeat filas (vec (repeat columnas \space)))))
-
-
-(defn read-program [file-path]
-  "Lee el archivo Befunge-93 y lo convierte en una grilla de 80x25."
+(defn read-program [file-path elementos]
+  "Lee el archivo Befunge-93 y lo convierte en una grilla de 80x25 y lo carga en elementos."
   (let [lines (with-open [rdr (clojure.java.io/reader file-path)]
-                (doall (line-seq rdr)))]
-    (vec (map-indexed (fn [y line]
+                (doall (line-seq rdr)))
+        matriz (vec (map-indexed (fn [y line]
                         (vec (concat (mapv identity (take columnas line))
                                      (repeat (- columnas (count line)) \space))))
-                      (take filas lines)))))
+                                 (take filas lines)))]
+    (assoc elementos :matriz matriz)))
 
+
+
+(defn interpretar-cmd [elemento elementos]
+      "Interpreta un comando de Befunge-93"
+      (let [elementos (if (= elemento \")
+                        (toggle-stringmode elementos)
+                        elementos)
+            nuevos-elementos (cond
+                               (:string-mode elementos) (if (not= elemento \")
+                                                          (agregar (int elemento) elementos)
+                                                          elementos)
+                               :else (case elemento
+                                           \0 (agregar 0 elementos)
+                                           \1 (agregar 1 elementos)
+                                           \2 (agregar 2 elementos)
+                                           \3 (agregar 3 elementos)
+                                           \4 (agregar 4 elementos)
+                                           \5 (agregar 5 elementos)
+                                           \6 (agregar 6 elementos)
+                                           \7 (agregar 7 elementos)
+                                           \8 (agregar 8 elementos)
+                                           \9 (agregar 9 elementos)
+                                            \+ (add elementos)
+                                            \- (resta elementos)
+                                            \* (multiply elementos)
+                                            \/ (divide elementos)
+                                            \% (modulo elementos)
+                                            \! (not-f elementos)
+                                            \`(greater elementos)
+                                           \\ (swap elementos)
+                                            \_ (horizontal-if elementos)
+                                            \| (vertical-if elementos)
+                                            \: (dup elementos)
+                                           \$ (pop-f elementos)
+                                           \# (bridge elementos)
+                                           \. (output-int elementos)
+                                           \, (output-char elementos)
+                                           \> (assoc elementos :pc (assoc (:pc elementos) :direction :right))
+                                            \< (assoc elementos :pc (assoc (:pc elementos) :direction :left))
+                                            \^ (assoc elementos :pc (assoc (:pc elementos) :direction :up))
+                                            \v (assoc elementos :pc (assoc (:pc elementos) :direction :down))
+                                            \? (assoc elementos :pc (assoc (:pc elementos) :direction (rand-nth [:right :left :up :down])))
+                                           \g (g-cmd elementos)
+                                            \p (p-cmd elementos)
+                                            \& (input-int elementos)
+                                            \~ (input-char elementos)
+                                           elementos))]
+           (print elementos)
+           nuevos-elementos)
+      ) ; Retorna los nuevos elementos; Retorna los nuevos elementos
+
+(defn get-current-command [elementos]
+      "Obtiene el comando en la posición actual del PC"
+      (let [y (get-in elementos [:pc :columna])
+            x (get-in elementos [:pc :fila])]
+           (get-in elementos [:matriz x y] \space)
+          ))
+
+
+
+(defn flujo-programa [elementos]
+  "Ejecuta el flujo de un programa Befunge-93"
+      (loop [elementos elementos]
+            (let [comando (get-current-command elementos)
+                  nuevos-elementos (interpretar-cmd comando elementos)]
+                 (when (= comando \@)
+                       (print (:matriz elementos))
+                       (System/exit 0))
+                 (recur (move-pc nuevos-elementos))))
+
+      )
 
 (defn -main [& args]
-  "I don't do a whole lot ... yet."
+      "I don't do a whole lot ... yet."
+      (let [elementos {:pc {:columna 0 :fila 0 :direction :right}
+                       :stack []
+                       :matriz [[]]
+                       :string-mode false}]
 
-      (println "Hello, World!")
-      (println (read-program (first args)))
-      "llamar a pila y hacer 2 push y luego llamar a add"
-      (push 6)
-      (push 6)
-      (push 5)
-      (add)
-      (multiply)
-      (push 1)
-      (resta)
-      (output-char)
+           (let [updated-elementos (read-program (first args) elementos)]
+                (flujo-programa updated-elementos))))
 
 
-      (println "la pila queda de la siguiente forma: " @pila)
-  )
+
+
+
+
+
 

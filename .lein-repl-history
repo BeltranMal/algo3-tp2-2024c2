@@ -1,0 +1,133 @@
+(defn push [valor programa]
+      "Pushes a value onto the stack"
+      (update programa :stack conj valor))
+(def programa
+  {:matriz [[]]   ; 80x25 grid
+   :stack []                     ; stack for operations
+   :pc {:x 0
+        :y 0
+        :direction :right}
+   :string-mode false})
+(def programa
+  {:matriz [[]]   ; 80x25 grid
+   :stack []                     ; stack for operations
+   :pc {:x 0
+        :y 0
+        :direction :right}
+   :string-mode false})
+(defn programa
+  {:matriz [[]]   ; 80x25 grid
+   :stack []                     ; stack for operations
+   :pc {:x 0
+        :y 0
+        :direction :right}
+   :string-mode false})
+(def programa
+  {:matriz [[]]   ; 80x25 grid
+   :stack []                     ; stack for operations
+   :pc {:x 0
+        :y 0
+        :direction :right}
+   :string-mode false})
+;; Stack manipulation functions
+(defn push [valor programa]
+      (assoc programa :stack (conj (:stack programa) valor)))
+(def programa
+  {:matriz [[]]   ; 80x25 grid
+   :stack []                     ; stack for operations
+   :pc {:x 0
+        :y 0
+        :direction :right}
+   :string-mode false})
+;; Stack manipulation functions
+(defn agregar [valor programa]
+      (assoc programa :stack (conj (:stack programa) valor)))
+(def elementos
+  {:matriz [[]]   ; 80x25 grid
+   :stack []                     ; stack for operations
+   :pc {:x 0
+        :y 0
+        :direction :right}
+   :string-mode false})
+(agregar 5 elementos)
+(def elementos
+  {:matriz [[]]   ; 80x25 grid
+   :stack []                     ; stack for operations
+   :pc {:x 0
+        :y 0
+        :direction :right}
+   :string-mode false})
+;; Stack manipulation functions
+(defn agregar [valor elementos]
+      (assoc elementos :stack (conj (:stack elementos) valor)))
+(defn quitar [elementos]
+      (let [stack (:stack elementos)]
+           (if (empty? stack)
+             [elementos 0]
+             [(assoc elementos :stack (butlast stack)) (peek stack)])))
+(def elementos
+  {:matriz [[]]   ; 80x25 grid
+   :stack []                     ; stack for operations
+   :pc {:x 0
+        :y 0
+        :direction :right}
+   :string-mode false})
+(defn agregar [valor elementos]
+      (assoc elementos :stack (conj (:stack elementos) valor)))
+(defn quitar [elementos]
+      (let [stack (:stack elementos)]
+           (if (empty? stack)
+             [elementos 0]
+             [(assoc elementos :stack (butlast stack)) (peek stack)])))
+quit
+(def elementos
+  {:matriz [[]]   ; 80x25 grid
+   :stack []                     ; stack for operations
+   :pc {:x 0
+        :y 0
+        :direction :right}
+   :string-mode false})
+(defn agregar [valor elementos]
+      (assoc elementos :stack (conj (:stack elementos) valor)))
+(defn quitar [elementos]
+      (let [stack (:stack elementos)]
+           (if (empty? stack)
+             [elementos 0]
+             [(assoc elementos :stack (butlast stack)) (peek stack)])))
+(agregar 5 elementos)
+(agregar 6 elementos)
+(-> elementos
+    (agregar 5)
+    (agregar 6)
+    (agregar 7)
+    quitar)
+(-> elementos
+    (agregar 5)
+    (agregar 6)
+    (agregar 7)
+    quitar)
+Execution error (ClassCastException) at befunge-93.core/agregar (form-init239535832941489207.clj:2).
+class java.lang.Long cannot be cast to class clojure.lang.Associative (java.lang.Long is in module java.base of loader 'bootstrap'; clojure.lang.Associative is in unnamed module of loader 'app')
+Execution error (ClassCastException) at befunge-93.core/agregar (form-init239535832941489207.clj:2).
+class java.lang.Long cannot be cast to class clojure.lang.Associative (java.lang.Long is in module java.base of loader 'bootstrap'; clojure.lang.Associative is in unnamed module of loader 'app')
+quit
+(def elementos
+  {:matriz [[]]   ; 80x25 grid
+   :stack []                     ; stack for operations
+   :pc {:x 0
+        :y 0
+        :direction :right}
+   :string-mode false})
+(defn rutas [d a]
+  (if (= [d a] [0 0])
+    '("")
+    (let [rutas-d (if (pos? d) (rutas (dec d) a) nil)
+          rutas-a (if (pos? a) (rutas d (dec a)) nil)]
+      (concat (map #(str \d %) rutas-d) (map #(str \a %) rutas-a)))))
+(assert (= #{"ddaa" "dada" "daad" "adda" "adad" "aadd"} (set (rutas 2 2))))
+(defn read-lines []
+      (doseq [line (line-seq (java.io.BufferedReader. *in*))]
+             (println line)))
+(read-lines) &,...
+/var/folders/sr/xn0c5_nj4ss7xcz_bkhh8glh0000gn/T/clojure-12466244275222561651.edn
+quit

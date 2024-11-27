@@ -1,48 +1,45 @@
 (ns befunge-93.PC
     (:require [befunge-93.stack :refer [quitar]]))
 
-(def pc (atom [0 0]))
 (def filas 25)
 (def columnas 80)
 
-
-;;PC movement functions
 (defn wrap-coordinate [coord max]
       "Implements toroidal wrapping for PC coordinates"
       (mod coord max))
 
-(defn move-pc [direction]
-      (swap! pc (fn [[x y]]
-                    (let [[new-x new-y]
-                          (case (if (= direction :random)
-                                  (rand-nth [:right :left :up :down])
-                                  direction)
-                                :right  [(inc x) y]
-                                :left   [(dec x) y]
-                                :up     [x (dec y)]
-                                :down   [x (inc y)])]
-                         [(wrap-coordinate new-x columnas)
-                          (wrap-coordinate new-y filas)]))))
+(defn move-pc [elementos]
+      "Mueve el PC en la dirección especificada por el mapa de elementos"
+      (let [x (:columna (:pc elementos))
+            y (:fila (:pc elementos))
+            direction (:direction (:pc elementos))
+            [new-x new-y] (case direction
+                                :right [(inc x) y]
+                                :left  [(dec x) y]
+                                :up    [x (dec y)]
+                                :down  [x (inc y)])
 
+            ]
+           (assoc elementos :pc {:columna (wrap-coordinate new-x columnas)
+                                 :fila (wrap-coordinate new-y filas)
+                                 :direction direction})))
 
+(defn horizontal-if [elementos]
+      "PC->left if <value>, else PC->right"
+      (let [[elementos valor] (quitar elementos)]
+           (assoc elementos :pc
+                  (assoc (:pc elementos)
+                         :direction (if (zero? valor) :right :left)))))
 
+(defn vertical-if [elementos]
+      "PC->up if <value>, else PC->down"
+      (let [[elementos valor] (quitar elementos)]
+           (assoc elementos :pc
+                  (assoc (:pc elementos)
+                         :direction (if (zero? valor) :down :up)))))
 
-"_ (horizontal if) <boolean value>   PC->left if <value>, else PC->right"
-(defn _ []
-      (let [valor (quitar)]
-           (if (zero? valor)
-             (move-pc :right)
-             (move-pc :left))))
-
-"| (vertical if)   <boolean value>       PC->up if <value>, else PC->down"
-(defn | []
-      (let [valor (quitar)]
-           (if (zero? valor)
-             (move-pc :up)
-             (move-pc :down))))
-
-"# (bridge)                              'jumps' PC one farther; skips"
-(defn bridge [direccion]
-      (move-pc direccion))
-
-
+(defn bridge [elementos]
+      "Skips the next command by moving PC twice in current direction"
+      (-> elementos
+          move-pc
+          move-pc))
