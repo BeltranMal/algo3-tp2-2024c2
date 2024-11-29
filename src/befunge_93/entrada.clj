@@ -1,5 +1,6 @@
 (ns befunge-93.entrada
-    (:gen-class))
+    (:gen-class)
+    (:require [befunge-93.stack :refer [agregar]]))
 
 "& (input int)                           <value user entered>"
 (defn input-int [elementos]

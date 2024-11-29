@@ -1,6 +1,7 @@
 (ns befunge-93.core
     (:require [befunge-93.stack :refer :all])
     (:require [befunge-93.PC :refer :all])
+    (:require [befunge-93.entrada :refer :all])
   (:gen-class))
 
 (defn read-program [file-path elementos]
@@ -60,7 +61,6 @@
                                             \& (input-int elementos)
                                             \~ (input-char elementos)
                                            elementos))]
-           (print elementos)
            nuevos-elementos)
       ) ; Retorna los nuevos elementos; Retorna los nuevos elementos
 
@@ -79,7 +79,6 @@
             (let [comando (get-current-command elementos)
                   nuevos-elementos (interpretar-cmd comando elementos)]
                  (when (= comando \@)
-                       (print (:matriz elementos))
                        (System/exit 0))
                  (recur (move-pc nuevos-elementos))))
 
