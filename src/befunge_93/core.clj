@@ -18,6 +18,7 @@
 
 (defn interpretar-cmd [elemento elementos]
       "Interpreta un comando de Befunge-93"
+
       (let [elementos (if (= elemento \")
                         (toggle-stringmode elementos)
                         elementos)
@@ -61,8 +62,10 @@
                                             \& (input-int elementos)
                                             \~ (input-char elementos)
                                            elementos))]
+
            nuevos-elementos)
-      ) ; Retorna los nuevos elementos; Retorna los nuevos elementos
+
+      ) ;Retorna los nuevos elementos; Retorna los nuevos elementos
 
 (defn get-current-command [elementos]
       "Obtiene el comando en la posición actual del PC"

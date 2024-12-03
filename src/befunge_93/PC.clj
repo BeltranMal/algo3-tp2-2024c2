@@ -1,12 +1,8 @@
 (ns befunge-93.PC
-    (:require [befunge-93.stack :refer [quitar]]))
+    (:require [befunge-93.stack :refer [quitar, wrap-coordinate]]))
 
 (def filas 25)
 (def columnas 80)
-
-(defn wrap-coordinate [coord max]
-      "Implements toroidal wrapping for PC coordinates"
-      (mod coord max))
 
 (defn move-pc [elementos]
       "Mueve el PC en la dirección especificada por el mapa de elementos"
@@ -41,5 +37,4 @@
 (defn bridge [elementos]
       "Skips the next command by moving PC twice in current direction"
       (-> elementos
-          move-pc
           move-pc))
